@@ -19,6 +19,13 @@ $ python -m pip install Django
 
 Here is the project structure:
 
-    ├── x                    # a
+    ├── mysite/
+        ├── manage.py
+        ├── mysite/
+            ├── __init__.py
+            ├── settings.py
+            ├── urls.py
+            ├── asgi.py
+            ├── wsgi.py                  
     ├── y                    # b
     ├── z                    # c
