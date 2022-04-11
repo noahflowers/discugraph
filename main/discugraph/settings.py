@@ -1,4 +1,3 @@
-@@ -1,123 +0,0 @@
 """
 Django settings for mysite project.
 
