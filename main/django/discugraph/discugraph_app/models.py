@@ -11,14 +11,16 @@ class User(models.Model):
 class Topic(models.Model):
     post_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
-    poster = User('topic poster')
-    children = models.IntegerField(default=0)
+    poster = models.ForeignKey(User, on_delete=models.CASCADE)
+    children = models.CharField(max_length=100)
 
 
 class Post(models.Model):
     post_text = models.CharField(max_length=500)
     pub_date = models.DateTimeField('date published')
-    poster = User('post poster')
-    topic = Topic()
-    parent = models.ForeignKey('self', null=True, related_name='post', on_delete=models.CASCADE)
+    poster = models.ForeignKey(User, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     children = models.CharField(max_length=100)
+
+    def get_children(self):
+        pass
