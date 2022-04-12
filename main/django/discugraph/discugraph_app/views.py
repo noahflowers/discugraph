@@ -1,3 +1,5 @@
+import datetime
+import json
 from django.shortcuts import render
 
 # Create your views here.
@@ -5,7 +7,7 @@ from django.http import HttpResponse, JsonResponse
 
 # from discugraph_app.models import Topic, Post
 # from discugraph.discugraph_app.models import Topic, Post
-from discugraph_app.models import Topic, Post
+from discugraph_app.models import Topic, Post, User
 
 
 def index(request):
@@ -34,3 +36,13 @@ def get_posts(request):
             data.append([])
         data[level].append(post_json)
     return JsonResponse(data, safe=False)
+
+
+def new_post(request):
+    data = json.load(request)
+    print(data)
+    user = User.objects.filter(id=data['user']).first()
+    topic = Topic.objects.filter(id=data['topic']).first()
+    post = Post(post_text=data['text'], poster=user, topic=topic, children="", pub_date=datetime.datetime.now())
+    post.save()
+    return HttpResponse(200)

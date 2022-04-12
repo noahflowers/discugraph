@@ -1,7 +1,7 @@
 import {Post} from './Post'
 import React from 'react'
 import styled from 'styled-components'
-import {QueryClient, QueryClientProvider, useQuery, useQueryClient} from 'react-query'
+import {QueryClient, QueryClientProvider, useQuery, useQueryClient, useMutation} from 'react-query'
 import {Button} from "react-query/types/devtools/styledComponents";
 // import TextField from "@material-ui/core/TextField";
 
@@ -21,8 +21,17 @@ export const MessageBoard: (() => JSX.Element) = () => {
     const data = useQuery(["data"], async () => {
         return (await fetch('/discugraph/api/get_posts')).json()
     })
+    const newPost = useMutation(async (post_data) => {
+                                return (await fetch('/discugraph/api/new_post/', {method: 'POST',
+                                headers: {},
+                                body: JSON.stringify(post_data)}))
+
+                            }, {onSuccess: () => {
+                                queryClient2.invalidateQueries("data")
+        }})
     const [selected, setSelected] = React.useState([]);
     const [mode, setMode] = React.useState("viewing");
+    const [input, setInput] = React.useState("")
 
 // set parent/child border css from child ??
     if (data.isLoading) {
@@ -50,7 +59,14 @@ export const MessageBoard: (() => JSX.Element) = () => {
                     <button onClick={()=>{setMode("viewing"); setSelected([]);}}>Cancel</button>
                 </> ) : (
                    <>
-                    <button onClick={()=>{setMode("viewing"); setSelected([]);}}>Post Reply</button>
+                    <button onClick={
+                        ()=>{
+                            setMode("viewing");
+                            setSelected([]);
+                            const post_data = {"text": input, "user":1, "topic":1}
+                            newPost.mutate(post_data)
+
+                    }}>Post Reply</button>
                     <button onClick={()=>{setMode("viewing"); setSelected([]);}}>Cancel</button>
                 </>
                 )
@@ -84,7 +100,7 @@ export const MessageBoard: (() => JSX.Element) = () => {
                     </Container>
                 )
             })}
-            {(mode==="writing") && (<input id="outlined-basic" label="Outlined" variant="outlined" />)}
+            {(mode==="writing") && (<input id="outlined-basic" label="Outlined" variant="outlined" value={input} onChange={(event) => setInput(event.target.value)} />)}
 
         </div>
     )
