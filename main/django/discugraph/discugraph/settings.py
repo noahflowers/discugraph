@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-gpt1(tysgn#0&ea#(ex!ff0uuyd*fjrb-t0u*8%ws-mj@-_*5i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition

@@ -29,7 +29,12 @@ module.exports = {
         static: {
             directory: path.join(__dirname, './'),
             publicPath: '/',
-        }
+        },
+        proxy: {
+            '/discugraph/api/**': {
+                target: 'http://127.0.0.1:8000/',
+            },
+        },
     },
     plugins: [
         // Re-generate index.html with injected script tag.

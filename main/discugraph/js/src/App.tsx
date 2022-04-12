@@ -1,9 +1,14 @@
 import React from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { MessageBoard } from './components/MessageBoard'
+
+const queryClient = new QueryClient()
 
 export const App: (() => JSX.Element) = () => {
+     
     return (
-        <div>
-            <h1>Hello peter!</h1>
-        </div>
+        <QueryClientProvider client={queryClient}>
+            <MessageBoard />
+        </QueryClientProvider>
     )
 }
