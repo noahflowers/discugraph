@@ -1,6 +1,6 @@
 // webpack.config.js
 const path = require('path')
-const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './src/index.tsx', // our entry point, as mentioned earlier
@@ -22,14 +22,23 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        filename: 'bundle.js', // our output bundle
+        filename: 'static/bundle.js', // our output bundle
     },
     devServer: {
-        contentBase: path.join(__dirname, 'public/'),
-        port: 3000,
-        publicPath: 'http://localhost:3000/dist/',
-        hotOnly: true,
+        port: 5000,
+        static: {
+            directory: path.join(__dirname, './'),
+            publicPath: '/',
+        }
     },
-    plugins: [new webpack.HotModuleReplacementPlugin()], // used for hot reloading when developing
+    plugins: [
+        // Re-generate index.html with injected script tag.
+        // The injected script tag contains a src value of the
+        // filename output defined above.
+        new HtmlWebpackPlugin({
+          inject: true,
+          template: path.join(__dirname, './index.html'),
+        }),
+      ],
     devtool: 'eval-source-map', // builds high quality source maps
 }
